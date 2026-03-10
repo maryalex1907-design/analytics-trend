@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WB Анализатор трендов — Костюм женский</title>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <style>
+:root{--color-white:rgba(255,255,255,1);--color-black:rgba(0,0,0,1);--color-cream-50:rgba(252,252,249,1);--color-cream-100:rgba(255,255,253,1);--color-gray-200:rgba(245,245,245,1);--color-gray-300:rgba(167,169,169,1);--color-gray-400:rgba(119,124,124,1);--color-slate-500:rgba(98,108,113,1);--color-brown-600:rgba(94,82,64,1);--color-charcoal-700:rgba(31,33,33,1);--color-charcoal-800:rgba(38,40,40,1);--color-slate-900:rgba(19,52,59,1);--color-teal-300:rgba(50,184,198,1);--color-teal-400:rgba(45,166,178,1);--color-teal-500:rgba(33,128,141,1);--color-teal-600:rgba(29,116,128,1);--color-teal-700:rgba(26,104,115,1);--color-teal-800:rgba(41,150,161,1);--color-red-400:rgba(255,84,89,1);--color-red-500:rgba(192,21,47,1);--color-orange-400:rgba(230,129,97,1);--color-orange-500:rgba(168,75,47,1);--color-brown-600-rgb:94,82,64;--color-teal-500-rgb:33,128,141;--color-slate-900-rgb:19,52,59;--color-slate-500-rgb:98,108,113;--color-red-500-rgb:192,21,47;--color-red-400-rgb:255,84,89;--color-orange-500-rgb:168,75,47;--color-orange-400-rgb:230,129,97;--color-background:var(--color-cream-50);--color-surface:var(--color-cream-100);--color-text:var(--color-slate-900);--color-text-secondary:var(--color-slate-500);--color-primary:var(--color-teal-500);--color-primary-hover:var(--color-teal-600);--color-primary-active:var(--color-teal-700);--color-secondary:rgba(var(--color-brown-600-rgb),.12);--color-secondary-hover:rgba(var(--color-brown-600-rgb),.2);--color-border:rgba(var(--color-brown-600-rgb),.2);--color-btn-primary-text:var(--color-cream-50);--color-card-border:rgba(var(--color-brown-600-rgb),.12);--color-card-border-inner:rgba(var(--color-brown-600-rgb),.12);--color-error:var(--color-red-500);--color-success:var(--color-teal-500);--color-warning:var(--color-orange-500);--color-info:var(--color-slate-500);--color-focus-ring:rgba(var(--color-teal-500-rgb),.4);--font-family-base:"FKGroteskNeue","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;--font-family-mono:"Berkeley Mono",ui-monospace,SFMono-Regular,Menlo,monospace;--font-size-xs:11px;--font-size-sm:12px;--font-size-base:14px;--font-size-md:14px;--font-size-lg:16px;--font-size-xl:18px;--font-size-2xl:20px;--font-size-3xl:24px;--font-size-4xl:30px;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:550;--font-weight-bold:600;--line-height-tight:1.2;--line-height-normal:1.5;--letter-spacing-tight:-0.01em;--space-4:4px;--space-6:6px;--space-8:8px;--space-10:10px;--space-12:12px;--space-16:16px;--space-20:20px;--space-24:24px;--space-32:32px;--radius-sm:6px;--radius-base:8px;--radius-md:10px;--radius-lg:12px;--radius-full:9999px;--shadow-sm:0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.02);--shadow-md:0 4px 6px -1px rgba(0,0,0,.04),0 2px 4px -1px rgba(0,0,0,.02);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.04),0 4px 6px -2px rgba(0,0,0,.02);--duration-fast:150ms;--duration-normal:250ms;--ease-standard:cubic-bezier(.16,1,.3,1)}
+@media(prefers-color-scheme:dark){:root{--color-gray-400-rgb:119,124,124;--color-teal-300-rgb:50,184,198;--color-gray-300-rgb:167,169,169;--color-gray-200-rgb:245,245,245;--color-background:var(--color-charcoal-700);--color-surface:var(--color-charcoal-800);--color-text:var(--color-gray-200);--color-text-secondary:rgba(var(--color-gray-300-rgb),.7);--color-primary:var(--color-teal-300);--color-primary-hover:var(--color-teal-400);--color-primary-active:var(--color-teal-800);--color-secondary:rgba(var(--color-gray-400-rgb),.15);--color-secondary-hover:rgba(var(--color-gray-400-rgb),.25);--color-border:rgba(var(--color-gray-400-rgb),.3);--color-error:var(--color-red-400);--color-success:var(--color-teal-300);--color-warning:var(--color-orange-400);--color-info:var(--color-gray-300);--color-focus-ring:rgba(var(--color-teal-300-rgb),.4);--color-btn-primary-text:var(--color-slate-900);--color-card-border:rgba(var(--color-gray-400-rgb),.2);--color-card-border-inner:rgba(var(--color-gray-400-rgb),.15)}}
+html{font-size:var(--font-size-base);font-family:var(--font-family-base);line-height:var(--line-height-normal);color:var(--color-text);background:var(--color-background);-webkit-font-smoothing:antialiased;box-sizing:border-box}
+body{margin:0;padding:0}*,*::before,*::after{box-sizing:inherit}
+h1,h2,h3,h4{margin:0;font-weight:var(--font-weight-semibold);line-height:var(--line-height-tight);color:var(--color-text);letter-spacing:var(--letter-spacing-tight)}
+h1{font-size:var(--font-size-4xl)}h2{font-size:var(--font-size-3xl)}h3{font-size:var(--font-size-2xl)}h4{font-size:var(--font-size-xl)}
+p{margin:0 0 var(--space-16) 0}
+a{color:var(--color-primary);text-decoration:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:var(--space-10) var(--space-20);border-radius:var(--radius-base);font-size:var(--font-size-base);font-weight:500;line-height:1.5;cursor:pointer;transition:all var(--duration-normal) var(--ease-standard);border:none}
+.btn--primary{background:var(--color-primary);color:var(--color-btn-primary-text)}
+.btn--primary:hover{background:var(--color-primary-hover)}
+.btn--primary:disabled{opacity:.5;cursor:not-allowed}
+.btn--secondary{background:var(--color-secondary);color:var(--color-text)}
+.btn--secondary:hover{background:var(--color-secondary-hover)}
+.btn--lg{padding:var(--space-12) var(--space-32);font-size:var(--font-size-lg);border-radius:var(--radius-md)}
+.card{background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-card-border);box-shadow:var(--shadow-sm);overflow:hidden}
+.card__body{padding:var(--space-16)}
+.card__header{padding:var(--space-16);border-bottom:1px solid var(--color-card-border-inner)}
+.status{display:inline-flex;align-items:center;padding:var(--space-4) var(--space-12);border-radius:var(--radius-full);font-weight:var(--font-weight-medium);font-size:var(--font-size-sm)}
+@font-face{font-family:'FKGroteskNeue';src:url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2')}
+
+/* App-specific */
+.app-container{max-width:1400px;margin:0 auto;padding:var(--space-24)}
+.hero{text-align:center;padding:48px 24px 32px}
+.hero h1{margin-bottom:var(--space-8)}
+.hero p{color:var(--color-text-secondary);font-size:var(--font-size-lg);max-width:600px;margin:0 auto var(--space-24)}
+.upload-zone{border:2px dashed var(--color-border);border-radius:var(--radius-lg);padding:48px 32px;text-align:center;cursor:pointer;transition:all var(--duration-normal) var(--ease-standard);max-width:600px;margin:0 auto;position:relative}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--color-primary);background:rgba(var(--color-teal-500-rgb),.05)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-icon{font-size:48px;margin-bottom:var(--space-12)}
+.settings-row{display:flex;gap:var(--space-16);align-items:end;flex-wrap:wrap;max-width:800px;margin:var(--space-24) auto 0}
+.settings-row .field{flex:1;min-width:200px}
+.settings-row label{display:block;margin-bottom:var(--space-6);font-weight:var(--font-weight-medium);font-size:var(--font-size-sm);color:var(--color-text-secondary)}
+.settings-row input,.settings-row select{width:100%;padding:var(--space-8) var(--space-12);border:1px solid var(--color-border);border-radius:var(--radius-base);background:var(--color-surface);color:var(--color-text);font-size:var(--font-size-base)}
+.settings-row input:focus,.settings-row select:focus{border-color:var(--color-primary);outline:2px solid var(--color-primary)}
+.results{display:none;margin-top:var(--space-32)}
+.tab-bar{display:flex;gap:var(--space-4);border-bottom:2px solid var(--color-border);margin-bottom:var(--space-24);overflow-x:auto}
+.tab-btn{padding:var(--space-10) var(--space-20);border:none;background:none;cursor:pointer;font-size:var(--font-size-base);font-weight:var(--font-weight-medium);color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all var(--duration-fast)}
+.tab-btn.active{color:var(--color-primary);border-bottom-color:var(--color-primary)}
+.tab-btn:hover{color:var(--color-text)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-16);margin-bottom:var(--space-24)}
+.stat-card{background:var(--color-surface);border:1px solid var(--color-card-border);border-radius:var(--radius-lg);padding:var(--space-16);text-align:center}
+.stat-card .value{font-size:var(--font-size-3xl);font-weight:var(--font-weight-bold);color:var(--color-primary)}
+.stat-card .label{font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-top:var(--space-4)}
+.data-table{width:100%;border-collapse:collapse;font-size:var(--font-size-sm)}
+.data-table th{text-align:left;padding:var(--space-10) var(--space-12);background:var(--color-secondary);font-weight:var(--font-weight-semibold);border-bottom:2px solid var(--color-border);white-space:nowrap;position:sticky;top:0;z-index:1}
+.data-table td{padding:var(--space-8) var(--space-12);border-bottom:1px solid var(--color-card-border-inner)}
+.data-table tr:hover td{background:rgba(var(--color-teal-500-rgb),.04)}
+.table-wrap{overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--color-card-border);max-height:600px;overflow-y:auto}
+.growth-pos{color:var(--color-success);font-weight:var(--font-weight-medium)}
+.growth-neg{color:var(--color-error);font-weight:var(--font-weight-medium)}
+.badge{display:inline-block;padding:var(--space-4) var(--space-8);border-radius:var(--radius-full);font-size:var(--font-size-xs);font-weight:var(--font-weight-bold);text-transform:uppercase;letter-spacing:.05em}
+.badge-fire{background:rgba(255,69,0,.12);color:#ff4500}
+.badge-bolt{background:rgba(255,215,0,.15);color:#b8860b}
+.badge-gem{background:rgba(50,205,50,.12);color:#228b22}
+.section-title{margin-bottom:var(--space-16);padding-bottom:var(--space-8);border-bottom:1px solid var(--color-border)}
+.niche-card{background:var(--color-surface);border:1px solid var(--color-card-border);border-radius:var(--radius-lg);padding:var(--space-16);margin-bottom:var(--space-12);transition:box-shadow var(--duration-normal)}
+.niche-card:hover{box-shadow:var(--shadow-md)}
+.niche-card h4{margin-bottom:var(--space-8)}
+.niche-meta{display:flex;gap:var(--space-16);flex-wrap:wrap;font-size:var(--font-size-sm);color:var(--color-text-secondary)}
+.niche-meta span{display:flex;align-items:center;gap:var(--space-4)}
+.loader{display:none;text-align:center;padding:var(--space-32)}
+.loader.visible{display:block}
+.spinner{width:40px;height:40px;border:3px solid var(--color-border);border-top-color:var(--color-primary);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto var(--space-12)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.exclude-tags{display:flex;flex-wrap:wrap;gap:var(--space-6);margin-top:var(--space-8)}
+.exclude-tag{display:inline-flex;align-items:center;gap:var(--space-4);padding:var(--space-4) var(--space-10);background:var(--color-secondary);border-radius:var(--radius-full);font-size:var(--font-size-sm);cursor:pointer;transition:all var(--duration-fast)}
+.exclude-tag:hover{background:rgba(var(--color-red-500-rgb),.15);color:var(--color-error)}
+.exclude-tag.active{background:rgba(var(--color-red-500-rgb),.12);color:var(--color-error);text-decoration:line-through}
+.info-box{background:rgba(var(--color-teal-500-rgb),.06);border:1px solid rgba(var(--color-teal-500-rgb),.2);border-radius:var(--radius-lg);padding:var(--space-16);margin-bottom:var(--space-24);font-size:var(--font-size-sm);line-height:1.6}
+.info-box strong{color:var(--color-primary)}
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- HERO -->
+    <section class="hero" id="heroSection">
+        <h1>📊 WB Анализатор трендов</h1>
+        <p>Загрузите файл поисковых запросов из MarketGuru (.xlsx) и получите полный анализ растущих характеристик и нишевых микро-трендов</p>
+        <div class="upload-zone" id="uploadZone">
+            <input type="file" id="fileInput" accept=".xlsx,.xls" aria-label="Загрузить файл Excel">
+            <div class="upload-icon">📁</div>
+            <h3>Перетащите файл сюда</h3>
+            <p style="color:var(--color-text-secondary);margin:var(--space-8) 0 0">или нажмите, чтобы выбрать .xlsx файл из MarketGuru</p>
+        </div>
+        <div class="settings-row" id="settingsRow" style="display:none">
+            <div class="field">
+                <label>Исключить категории:</label>
+                <div class="exclude-tags" id="excludeTags"></div>
+            </div>
+        </div>
+        <div class="settings-row" id="commentRow" style="display:none;margin-top:var(--space-16)">
+            <div class="field" style="flex:2;min-width:300px">
+                <label for="userComment">💬 Комментарий к анализу (необязательно):</label>
+                <textarea id="userComment" class="form-control" rows="3" placeholder="Например: фокус на летний сезон, средний ценовой сегмент 2000–4000 ₽, интересуют только нишевые тренды с низкой конкуренцией..."></textarea>
+            </div>
+        </div>
+        <div style="margin-top:var(--space-16)" id="analyzeWrap" class="hidden">
+            <button class="btn btn--primary btn--lg" id="analyzeBtn" onclick="runAnalysis()">🚀 Запустить анализ</button>
+        </div>
+    </section>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <p>Анализируем данные...</p>
+    </div>
+
+    <!-- RESULTS -->
+    <section class="results" id="results">
+        <div class="stats-grid" id="statsGrid"></div>
+        <nav class="tab-bar" id="tabBar">
+            <button class="tab-btn active" data-tab="mainTrends">📈 Растущие характеристики</button>
+            <button class="tab-btn" data-tab="nicheTrends">💎 Нишевые микро-тренды</button>
+            <button class="tab-btn" data-tab="topQueries">🔍 Топ растущих запросов</button>
+            <button class="tab-btn" data-tab="nicheQueries">🎯 Топ нишевых запросов</button>
+            <button class="tab-btn" data-tab="falling">📉 Падающие (не делать)</button>
+        </nav>
+        <div class="tab-panel active" id="mainTrends"></div>
+        <div class="tab-panel" id="nicheTrends"></div>
+        <div class="tab-panel" id="topQueries"></div>
+        <div class="tab-panel" id="nicheQueries"></div>
+        <div class="tab-panel" id="falling"></div>
+    </section>
+</div>
+
+<script>
+const DEFAULT_EXCLUDES = ['спортивн','деловой','деловых','делово','медицин','хирургич','горнолыж','лыжн','фитнес','домашн','пижам','карнавал','рабоч','гидрокостюм','сауна','ролев','эрот','купальн','термо','одноразов','маск','тепл','утеплен','зимн','вязан','флис','начес'];
+const EXCLUDE_LABELS = {
+    'спортивн':'Спортивные','деловой':'Деловые','медицин':'Медицинские','хирургич':'Хирургические',
+    'горнолыж':'Горнолыжные','фитнес':'Фитнес','домашн':'Домашние','пижам':'Пижамы',
+    'карнавал':'Карнавальные','рабоч':'Рабочие','гидрокостюм':'Гидрокостюмы','сауна':'Сауна',
+    'купальн':'Купальные','тепл':'Тёплые','утеплен':'Утеплённые','зимн':'Зимние',
+    'вязан':'Вязаные','флис':'Флисовые','начес':'С начёсом'
+};
+
+let rawData = null;
+let activeExcludes = new Set(DEFAULT_EXCLUDES);
+
+const MATERIALS = {
+    'льняной':['льнян','лен ','лён'],'велюровый':['велюр'],'джинсовый':['джинсов'],
+    'твидовый':['твид'],'трикотажный':['трикотаж'],'вельветовый':['вельвет'],
+    'шёлковый':['шёлк','шелк','шелков'],'хлопковый':['хлопк','хлопок'],
+    'атласный':['атлас'],'кружевной':['кружев'],'замшевый':['замшев'],'кожаный':['кожан'],
+    'муслиновый':['муслин']
+};
+const STYLES = {
+    'брючный':['брючн'],'с юбкой':['с юбк','юбка ','юбочн','юбкой'],
+    'с шортами':['с шорт','шорты'],'с бриджами':['бридж'],'тройка':['тройк'],
+    'двойка':['двойк'],'оверсайз':['оверсайз'],'классический':['классич'],
+    'праздничный':['праздн','наряд','вечерн','торжеств'],'пляжный':['пляжн'],
+    'с пиджаком':['пиджак'],'с жилетом':['жилет'],'палаццо':['палаццо'],
+    'алладины':['алладин','шаровар']
+};
+const COLORS = {
+    'белый':['бел'],'чёрный':['черн','чёрн'],'бежевый':['беж'],'розовый':['розов'],
+    'зелёный':['зелен','зелён'],'голубой':['голуб'],'красный':['красн'],
+    'синий':['синий','синего'],'коричневый':['коричнев'],'серый':['серый','серого','серая'],
+    'жёлтый':['желт','жёлт'],'оливковый':['оливков'],'молочный':['молочн']
+};
+const PRINTS = {
+    'в полоску':['полоск'],'в горошек':['горошек','горох'],'в клетку':['клетк'],
+    'в цветочек':['цветоч']
+};
+
+// Init exclude tags UI
+function initExcludes(){
+    const container = document.getElementById('excludeTags');
+    const unique = {};
+    DEFAULT_EXCLUDES.forEach(kw => {
+        const label = EXCLUDE_LABELS[kw] || kw;
+        if(!unique[label]){unique[label] = kw;}
+    });
+    Object.entries(unique).forEach(([label, kw]) => {
+        const tag = document.createElement('span');
+        tag.className = 'exclude-tag active';
+        tag.textContent = '✕ ' + label;
+        tag.dataset.kw = kw;
+        tag.onclick = () => {
+            if(activeExcludes.has(kw)){activeExcludes.delete(kw);tag.classList.remove('active');tag.textContent = label;}
+            else{activeExcludes.add(kw);tag.classList.add('active');tag.textContent = '✕ ' + label;}
+        };
+        container.appendChild(tag);
+    });
+}
+
+// File handling
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+
+uploadZone.addEventListener('dragover', e => {e.preventDefault();uploadZone.classList.add('dragover');});
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', e => {e.preventDefault();uploadZone.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change', e => {if(e.target.files[0]) handleFile(e.target.files[0]);});
+
+function handleFile(file){
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        const wb = XLSX.read(e.target.result, {type:'array'});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        rawData = XLSX.utils.sheet_to_json(ws);
+        document.getElementById('settingsRow').style.display = '';
+        document.getElementById('commentRow').style.display = '';
+        document.getElementById('analyzeWrap').classList.remove('hidden');
+        uploadZone.innerHTML = '<div class="upload-icon">✅</div><h3>Файл загружен: ' + esc(file.name) + '</h3><p style="color:var(--color-text-secondary);margin:var(--space-8) 0 0">' + rawData.length + ' строк. Настройте фильтры и нажмите «Запустить анализ»</p>';
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function num(v){const n=parseFloat(v);return isNaN(n)?null:n;}
+function fmt(n){if(n==null)return '—';return n.toLocaleString('ru-RU');}
+function fmtPct(n){if(n==null)return '—';const cl=n>0?'growth-pos':'growth-neg';return '<span class="'+cl+'">'+(n>0?'+':'')+n.toFixed(1)+'%</span>';}
+
+function matchKw(query, keywords){return keywords.some(kw => query.includes(kw));}
+
+function classify(query, categories){
+    const q = query.toLowerCase();
+    const found = [];
+    for(const [name, kws] of Object.entries(categories)){
+        if(matchKw(q, kws)) found.push(name);
+    }
+    return found;
+}
+
+function runAnalysis(){
+    if(!rawData) return;
+    document.getElementById('loader').classList.add('visible');
+    document.getElementById('results').style.display = 'none';
+    
+    setTimeout(() => {
+        try { doAnalysis(); } catch(err) { alert('Ошибка анализа: ' + err.message); }
+        document.getElementById('loader').classList.remove('visible');
+    }, 100);
+}
+
+function doAnalysis(){
+    const COL_QUERY = 'Поисковый запрос';
+    const COL_FREQ = 'Частотность WB';
+    const COL_FREQ_G = 'Частотность WB (% изменения за 30 дн.)';
+    const COL_ORDERS = 'Заказали товаров, шт.';
+    const COL_ORDERS_G = 'Заказали товаров (% изменения за 30 дн.)';
+    const COL_REV = 'Расчетная выручка по заказам, ₽';
+    const COL_REV_G = 'Расчетная выручка по заказам (% изменения за 30 дн.)';
+    const COL_CART = 'Добавили в корзину';
+    const COL_CART_G = 'Добавили в корзину (% изменения за 30 дн.)';
+    const COL_CONV = 'Конверсия в заказ, %';
+    const COL_PRICE = 'Ср. цена (с СПП) в ТОП-100, ₽';
+    const COL_NEW = '% новинок в ТОП-100';
+    const COL_COMP = 'Кол-во товаров в ТОП-100';
+    const COL_TOTAL = 'Общее кол-во товаров на WB';
+    const COL_SUBJ = 'Основной предмет';
+
+    // Filter
+    const excArr = [...activeExcludes];
+    let data = rawData.filter(r => {
+        const q = (r[COL_QUERY]||'').toLowerCase();
+        if(excArr.some(kw => q.includes(kw))) return false;
+        if(r[COL_SUBJ] && r[COL_SUBJ] !== 'Костюмы') return false;
+        return true;
+    });
+
+    // Parse numbers
+    data.forEach(r => {
+        [COL_FREQ,COL_FREQ_G,COL_ORDERS,COL_ORDERS_G,COL_REV,COL_REV_G,COL_CART,COL_CART_G,COL_CONV,COL_PRICE,COL_NEW,COL_COMP,COL_TOTAL].forEach(c => {
+            r['_'+c] = num(r[c]);
+        });
+    });
+
+    // === PART 1: Attribute analysis ===
+    const allCategories = {'Материал':MATERIALS,'Стиль/Силуэт':STYLES,'Цвет':COLORS,'Принт':PRINTS};
+    const attrMap = {};
+    
+    data.forEach(r => {
+        const q = (r[COL_QUERY]||'').toLowerCase();
+        for(const [catName, catDef] of Object.entries(allCategories)){
+            const attrs = classify(q, catDef);
+            attrs.forEach(attr => {
+                const key = catName + '|' + attr;
+                if(!attrMap[key]) attrMap[key] = {cat:catName, attr, rows:[]};
+                attrMap[key].rows.push(r);
+            });
+        }
+    });
+
+    const attrSummary = Object.values(attrMap).map(g => {
+        const rows = g.rows;
+        const n = rows.length;
+        return {
+            cat: g.cat, attr: g.attr, count: n,
+            totalFreq: rows.reduce((s,r) => s + (r['_'+COL_FREQ]||0), 0),
+            avgFreqG: rows.reduce((s,r) => s + (r['_'+COL_FREQ_G]||0), 0) / n,
+            totalOrders: rows.reduce((s,r) => s + (r['_'+COL_ORDERS]||0), 0),
+            avgOrdersG: rows.reduce((s,r) => s + (r['_'+COL_ORDERS_G]||0), 0) / n,
+            totalRev: rows.reduce((s,r) => s + (r['_'+COL_REV]||0), 0),
+            avgRevG: rows.filter(r=>r['_'+COL_REV_G]!=null).reduce((s,r) => s + (r['_'+COL_REV_G]||0), 0) / (rows.filter(r=>r['_'+COL_REV_G]!=null).length||1),
+            avgPrice: rows.reduce((s,r) => s + (r['_'+COL_PRICE]||0), 0) / n,
+            avgNew: rows.reduce((s,r) => s + (r['_'+COL_NEW]||0), 0) / n,
+        };
+    }).filter(a => a.totalFreq > 3000);
+
+    const growing = attrSummary.filter(a => a.avgFreqG > 10 && a.avgOrdersG > 10).sort((a,b) => b.avgOrdersG - a.avgOrdersG);
+    const fallingAttrs = attrSummary.filter(a => a.avgFreqG < -5 || a.avgOrdersG < -5).sort((a,b) => a.avgOrdersG - b.avgOrdersG);
+
+    // === PART 2: Niche micro-trends ===
+    const nicheData = data.filter(r =>
+        r['_'+COL_FREQ] >= 500 && r['_'+COL_FREQ] <= 50000 &&
+        r['_'+COL_FREQ_G] > 30 && r['_'+COL_ORDERS_G] > 50
+    ).sort((a,b) => b['_'+COL_ORDERS_G] - a['_'+COL_ORDERS_G]);
+
+    // Cluster niche trends
+    const nicheClusters = {};
+    const NICHE_KWS = {
+        'С бриджами':['бридж'],'Алладины/шаровары':['алладин','шаровар'],
+        'Палаццо':['палаццо'],'С жилетом':['жилет'],'Кожаный/замша':['кожан','замшев'],
+        'В горошек':['горошек','горох'],'В полоску':['полоск'],'Кружево':['кружев'],
+        'Стиль 90-х':['90-х'],'С футболкой':['футболк'],'Рубашка+брюки':['рубашк'],
+        'Для невысоких':['невысок'],'Шорты+пиджак':['шорт'],
+        'Юбка длинная':['длинн'],'Юбка-шорты':['юбкой шорт','юбка-шорт','юбку шорт'],
+        'Дачный':['дачн'],'Оливковый':['оливков'],'Плиссе':['плиссе'],
+        'Для торжества':['торжеств'],'Широкие штаны':['широк'],
+        'Весенний':['весен','весн','весна']
+    };
+
+    nicheData.forEach(r => {
+        const q = (r[COL_QUERY]||'').toLowerCase();
+        for(const [name, kws] of Object.entries(NICHE_KWS)){
+            if(matchKw(q, kws)){
+                if(!nicheClusters[name]) nicheClusters[name] = [];
+                nicheClusters[name].push(r);
+                break;
+            }
+        }
+    });
+
+    const nicheAgg = Object.entries(nicheClusters).map(([name, rows]) => {
+        const n = rows.length;
+        const totalComp = rows.reduce((s,r) => s + (r['_'+COL_TOTAL]||0), 0) / n;
+        const avgOG = rows.reduce((s,r) => s + (r['_'+COL_ORDERS_G]||0), 0) / n;
+        return {
+            name, count: n,
+            totalFreq: rows.reduce((s,r) => s + (r['_'+COL_FREQ]||0), 0),
+            avgFreqG: rows.reduce((s,r) => s + (r['_'+COL_FREQ_G]||0), 0) / n,
+            totalOrders: rows.reduce((s,r) => s + (r['_'+COL_ORDERS]||0), 0),
+            avgOrdersG: avgOG,
+            avgPrice: rows.reduce((s,r) => s + (r['_'+COL_PRICE]||0), 0) / n,
+            avgNew: rows.reduce((s,r) => s + (r['_'+COL_NEW]||0), 0) / n,
+            avgComp: totalComp,
+            score: avgOG / (totalComp / 1000 + 1),
+            examples: rows.slice(0,3).map(r => r[COL_QUERY]),
+            tier: avgOG > 150 ? 'fire' : (avgOG > 80 ? 'bolt' : 'gem'),
+        };
+    }).sort((a,b) => b.score - a.score);
+
+    // === Growing queries (mass) ===
+    const growingQueries = data.filter(r =>
+        r['_'+COL_FREQ_G] > 0 && r['_'+COL_ORDERS_G] > 0
+    ).sort((a,b) => b['_'+COL_FREQ] - a['_'+COL_FREQ]).slice(0, 60);
+
+    // === RENDER ===
+    const totalQueries = data.length;
+    const totalGrowing = data.filter(r => r['_'+COL_FREQ_G] > 0 && r['_'+COL_ORDERS_G] > 0).length;
+
+    // Stats
+    const userComment = document.getElementById('userComment').value.trim();
+    if(userComment){
+        const commentBox = document.createElement('div');
+        commentBox.className = 'info-box';
+        commentBox.style.marginBottom = 'var(--space-16)';
+        commentBox.innerHTML = '<strong>💬 Ваш комментарий к анализу:</strong> ' + esc(userComment);
+        document.getElementById('statsGrid').before(commentBox);
+    }
+
+    document.getElementById('statsGrid').innerHTML = `
+        <div class="stat-card"><div class="value">${fmt(rawData.length)}</div><div class="label">Всего запросов в файле</div></div>
+        <div class="stat-card"><div class="value">${fmt(totalQueries)}</div><div class="label">После фильтрации</div></div>
+        <div class="stat-card"><div class="value">${fmt(totalGrowing)}</div><div class="label">Растущих запросов</div></div>
+        <div class="stat-card"><div class="value">${growing.length}</div><div class="label">Растущих характеристик</div></div>
+        <div class="stat-card"><div class="value">${nicheAgg.length}</div><div class="label">Нишевых микро-трендов</div></div>
+        <div class="stat-card"><div class="value">${nicheData.length}</div><div class="label">Нишевых запросов</div></div>
+    `;
+
+    // Tab 1: Main growing attributes
+    let t1 = '<div class="info-box">Ниже — характеристики товаров (материал, силуэт, цвет, принт), агрегированные по всем запросам. Показаны только те, где <strong>и частотность, и заказы растут &gt;10%</strong>. Сортировка по среднему росту заказов.</div>';
+    t1 += '<div class="table-wrap"><table class="data-table"><thead><tr><th>Категория</th><th>Характеристика</th><th>Частотность</th><th>Рост частот.</th><th>Заказы</th><th>Рост заказов</th><th>Выручка ₽</th><th>Рост выручки</th><th>Ср. цена</th><th>Запросов</th></tr></thead><tbody>';
+    growing.forEach(a => {
+        t1 += `<tr><td>${esc(a.cat)}</td><td><strong>${esc(a.attr)}</strong></td><td>${fmt(a.totalFreq)}</td><td>${fmtPct(a.avgFreqG)}</td><td>${fmt(a.totalOrders)}</td><td>${fmtPct(a.avgOrdersG)}</td><td>${fmt(Math.round(a.totalRev))}</td><td>${fmtPct(a.avgRevG)}</td><td>${fmt(Math.round(a.avgPrice))} ₽</td><td>${a.count}</td></tr>`;
+    });
+    t1 += '</tbody></table></div>';
+    document.getElementById('mainTrends').innerHTML = t1;
+
+    // Tab 2: Niche micro-trends
+    let t2 = '<div class="info-box">Нишевые микро-тренды — запросы с частотностью 500–50 000, ростом частотности &gt;30% и заказов &gt;50%. Ранжированы по <strong>«оценке возможности»</strong> = рост заказов ÷ конкуренция. Чем выше — тем легче войти.</div>';
+    nicheAgg.forEach(n => {
+        const tierMap = {fire:'badge-fire', bolt:'badge-bolt', gem:'badge-gem'};
+        const tierLabel = {fire:'🔥 ВЗРЫВ', bolt:'⚡ РОСТ', gem:'💎 НИША'};
+        t2 += `<div class="niche-card">
+            <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:8px">
+                <h4>${esc(n.name)} <span class="badge ${tierMap[n.tier]}">${tierLabel[n.tier]}</span></h4>
+                <span style="font-size:var(--font-size-sm);color:var(--color-text-secondary)">Оценка: <strong style="color:var(--color-primary)">${n.score.toFixed(0)}</strong></span>
+            </div>
+            <div class="niche-meta" style="margin-top:8px">
+                <span>📊 Частотность: <strong>${fmt(n.totalFreq)}</strong></span>
+                <span>📈 Рост заказов: ${fmtPct(n.avgOrdersG)}</span>
+                <span>🛒 Заказы: <strong>${fmt(n.totalOrders)}</strong></span>
+                <span>💰 Ср. цена: ${fmt(Math.round(n.avgPrice))} ₽</span>
+                <span>🏭 Конкуренция: ${fmt(Math.round(n.avgComp))} товаров</span>
+                <span>🆕 Новинки: ${n.avgNew.toFixed(0)}%</span>
+            </div>
+            <div style="margin-top:8px;font-size:var(--font-size-sm);color:var(--color-text-secondary)">Примеры: ${n.examples.map(e=>'«'+esc(e)+'»').join(', ')}</div>
+        </div>`;
+    });
+    document.getElementById('nicheTrends').innerHTML = t2;
+
+    // Tab 3: Top growing queries
+    let t3 = '<div class="info-box">Топ растущих запросов — все запросы с положительным ростом частотности и заказов, отсортированные по частотности (объём спроса).</div>';
+    t3 += renderQueryTable(growingQueries, COL_QUERY,COL_FREQ,COL_FREQ_G,COL_ORDERS,COL_ORDERS_G,COL_REV,COL_PRICE,COL_NEW,COL_COMP,COL_TOTAL);
+    document.getElementById('topQueries').innerHTML = t3;
+
+    // Tab 4: Top niche queries
+    let t4 = '<div class="info-box">Нишевые запросы (500–50 000 частотности) с ростом частотности &gt;30% и заказов &gt;50%, отсортированные по росту заказов.</div>';
+    t4 += renderQueryTable(nicheData.slice(0,60), COL_QUERY,COL_FREQ,COL_FREQ_G,COL_ORDERS,COL_ORDERS_G,COL_REV,COL_PRICE,COL_NEW,COL_COMP,COL_TOTAL);
+    document.getElementById('nicheQueries').innerHTML = t4;
+
+    // Tab 5: Falling
+    let t5 = '<div class="info-box">Характеристики с <strong>падающей</strong> динамикой — для лета 2026 их лучше избегать.</div>';
+    t5 += '<div class="table-wrap"><table class="data-table"><thead><tr><th>Категория</th><th>Характеристика</th><th>Частотность</th><th>Рост частот.</th><th>Заказы</th><th>Рост заказов</th><th>Ср. цена</th></tr></thead><tbody>';
+    fallingAttrs.forEach(a => {
+        t5 += `<tr><td>${esc(a.cat)}</td><td><strong>${esc(a.attr)}</strong></td><td>${fmt(a.totalFreq)}</td><td>${fmtPct(a.avgFreqG)}</td><td>${fmt(a.totalOrders)}</td><td>${fmtPct(a.avgOrdersG)}</td><td>${fmt(Math.round(a.avgPrice))} ₽</td></tr>`;
+    });
+    t5 += '</tbody></table></div>';
+    document.getElementById('falling').innerHTML = t5;
+
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+function renderQueryTable(rows, ...cols){
+    const [Q,F,FG,O,OG,R,P,N,C,T] = cols;
+    let h = '<div class="table-wrap"><table class="data-table"><thead><tr><th>Запрос</th><th>Частотность</th><th>Рост частот.</th><th>Заказы</th><th>Рост заказов</th><th>Выручка ₽</th><th>Цена ТОП-100</th><th>Новинки %</th><th>ТОП-100</th><th>Всего на WB</th></tr></thead><tbody>';
+    rows.forEach(r => {
+        h += `<tr><td><strong>${esc(r[Q]||'')}</strong></td><td>${fmt(r['_'+F])}</td><td>${fmtPct(r['_'+FG])}</td><td>${fmt(r['_'+O])}</td><td>${fmtPct(r['_'+OG])}</td><td>${fmt(r['_'+R] ? Math.round(r['_'+R]) : null)}</td><td>${fmt(r['_'+P] ? Math.round(r['_'+P]) : null)} ₽</td><td>${r['_'+N]!=null ? r['_'+N].toFixed(1)+'%' : '—'}</td><td>${fmt(r['_'+C])}</td><td>${fmt(r['_'+T])}</td></tr>`;
+    });
+    h += '</tbody></table></div>';
+    return h;
+}
+
+// Tab switching
+document.getElementById('tabBar').addEventListener('click', e => {
+    if(!e.target.classList.contains('tab-btn')) return;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById(e.target.dataset.tab).classList.add('active');
+});
+
+initExcludes();
+</script>
+</body>
+</html>
